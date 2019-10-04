@@ -21,11 +21,11 @@ public class ContaBancaria {
 	public void saque(double valor){
 		saldo -= valor;
 	}
-	
+
 	public void deposita(double valor){
 		saldo += valor;
 	}
-	
+
 	// getters / setters
 	public String getTitular() {
 		return titular;
@@ -38,7 +38,7 @@ public class ContaBancaria {
 	public double getSaldo(){
 		return saldo;
 	}
-	
+
 	public static int getIdentificador() {
 		return identificador;
 	}
