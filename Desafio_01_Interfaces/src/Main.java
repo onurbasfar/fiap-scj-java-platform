@@ -1,23 +1,71 @@
 import javax.swing.*;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        Calculadora calculadora = new Calculadora();
-        testaSoma(calculadora);
+        Object[] operacoes = {"Soma", "Subtracao", "Multiplicacao", "Divisão"};
+        Object operacaoSelecionada = JOptionPane.showInputDialog(
+                null,
+                "Qual operaçao deseja realizar?", "Desafio Calculadora",
+                JOptionPane.INFORMATION_MESSAGE, null,
+                operacoes, operacoes[0]);
+        Resultado resultado = null;
 
+        switch (operacaoSelecionada.toString()) {
+            case "Soma":
+                resultado = testaSoma();
+                break;
+            case "Subtracao":
+                resultado = testaSubtracao();
+                break;
+            case "Multiplicacao":
+                resultado = testaMultiplicacao();
+                break;
+            case "Divisão":
+                resultado = testaDivisao();
+                break;
+        }
+
+        System.out.println(
+                String.format(
+                        "A operacao de %s do valor %s com %s resulta em %s",
+                        resultado.getOperacao(),
+                        resultado.getOperador1(),
+                        resultado.getOperador2(),
+                        resultado.getResultado()
+                )
+        );
     }
 
-    private static void testaSoma(Calculadora calculadora){
-        String inputs = JOptionPane.showInputDialog("Soma \n Por favor informe dois números separados por ; para realizarmos o teste de soma.");
+    private static Resultado testaSoma() {
+        String userInput = JOptionPane.showInputDialog("*** SOMA *** \n Informe dois números separados por ;");
+        Float[] inputs = convertStringArrayToFloatArray(userInput.split(";"));
+        float resultado = new Calculadora().somar(inputs[0], inputs[1]);
+        return new Resultado(inputs[0],inputs[1], resultado, "Soma");
+    }
 
-        String inputsArray[] = inputs.split(";");
-        float operador1 = Float.parseFloat(inputsArray[0]);
-        float operador2 = Float.parseFloat(inputsArray[1]);
+    private static Resultado testaSubtracao() {
+        String userInput = JOptionPane.showInputDialog("*** SUBTRACAO *** \n Informe dois números separados por ;");
+        Float[] inputs = convertStringArrayToFloatArray(userInput.split(";"));
+        float resultado = new Calculadora().subtrair(inputs[0], inputs[1]);
+        return new Resultado(inputs[0], inputs[1], resultado, "Subtraçao");
+    }
 
-        float resultado = calculadora.somar(operador1,operador2);
-        String mensagem = String.format("A soma de %s com %s resulta em %s",operador1,operador2,resultado);
+    private static Resultado testaMultiplicacao(){
+        String userInput = JOptionPane.showInputDialog("*** MULTIPLICAÇÃO *** \n Informe dois números separados por ;");
+        Float[] inputs = convertStringArrayToFloatArray(userInput.split(";"));
+        float resultado = new Calculadora().multiplicar(inputs[0],inputs[1]);
+        return new Resultado(inputs[0], inputs[1], resultado, "Subtraçao");
+    }
 
-        System.out.println(mensagem);
+    private static Resultado testaDivisao(){
+        String userInput = JOptionPane.showInputDialog("*** DIVISÃO *** \n Informe dois números separados por ;");
+        Float[] inputs = convertStringArrayToFloatArray(userInput.split(";"));
+        float resultado = new Calculadora().dividir(inputs[0],inputs[1]);
+        return new Resultado(inputs[0], inputs[1], resultado, "Subtraçao");
+    }
 
+    private static Float[] convertStringArrayToFloatArray(String[] input){
+        return Arrays.stream(input).map(Float::parseFloat).toArray(Float[]::new);
     }
 }
